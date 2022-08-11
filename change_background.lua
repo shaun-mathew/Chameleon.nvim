@@ -34,10 +34,14 @@ end
 local change_background = function(color)
   local arg = 'background="' .. color .. '"'
   local command = "kitty @ set-colors " .. arg
-  local handle = io.popen(command)
-  if handle ~= nil then
-    handle:close()
-  end
+  
+  vim.schedule(function()
+    local handle = io.popen(command)
+    if handle ~= nil then
+      handle:close()
+    end
+  end)
+
 end
 
 local autocmd = vim.api.nvim_create_autocmd
@@ -72,5 +76,3 @@ autocmd("VimLeavePre", {
   end,
   group = autogroup("BackgroundRestore", { clear = true }),
 })
-
--- kitty @ get-colors | grep -w "background" | sed "s/   */:/g" | cut -d : -f 2
