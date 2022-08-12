@@ -1,15 +1,6 @@
 local fn = vim.fn
 vim.g.ORIGINAL_KITTY_BG_COLOR = nil
 
-local split = function(str)
-  local tokens = {}
-  for s in string.gmatch(str, "%S+") do
-    table.insert(tokens, s)
-  end
-
-  return tokens
-end
-
 local get_kitty_background = function()
   local Job = require "plenary.job"
 
@@ -20,7 +11,7 @@ local get_kitty_background = function()
       args = { "@", "get-colors" },
       cwd = "/usr/bin/",
       on_exit = function(j, _)
-        local color = split(j:result()[4])[2]
+        local color = vim.split(j:result()[4], "s+")[2]
         vim.g.ORIGINAL_KITTY_BG_COLOR = color
       end,
     }):start()
