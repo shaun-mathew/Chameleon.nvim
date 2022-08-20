@@ -15,6 +15,13 @@ local get_kitty_background = function()
 					end
 				end
 			end,
+			on_stderr = function(_, d, _)
+				if #d > 1 then
+					api.nvim_err_writeln(
+						"Chameleon.nvim: Error changing background. Make sure kitty remote control is turned on."
+					)
+				end
+			end,
 		})
 	end
 end
@@ -24,6 +31,13 @@ local change_background = function(color, sync)
 	local command = "kitty @ set-colors " .. arg
 	if not sync then
 		fn.jobstart(command, {
+			on_stderr = function(_, d, _)
+				if #d > 1 then
+					api.nvim_err_writeln(
+						"Chameleon.nvim: Error changing background. Make sure kitty remote control is turned on."
+					)
+				end
+			end,
 		})
 	else
 		fn.system(command)
