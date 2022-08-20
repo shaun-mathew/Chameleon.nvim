@@ -27,7 +27,7 @@ use {
 #### NvChad Setup
 ```lua
 -- init.lua
-["/home/shaun/repos/chameleon.nvim"] = {
+["shaun-mathew/Chameleon.nvim"] = {
   after = "ui",
   config = function()
     require("chameleon").setup()
