@@ -1,4 +1,4 @@
-# Kitty-Neovim-Background-Changer
+# Chameleon.nvim
 A simple script to change kitty's background colour in response to colorscheme changes
 
 
