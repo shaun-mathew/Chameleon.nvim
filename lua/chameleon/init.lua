@@ -77,6 +77,8 @@ local setup_autocmds = function()
 		callback = function()
 			if M.original_color ~= nil then
 				change_background(M.original_color, true)
+				-- https://github.com/neovim/neovim/issues/21856
+				vim.cmd[[sleep 10m]]
 			end
 		end,
 		group = autogroup("BackgroundRestore", { clear = true }),
