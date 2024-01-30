@@ -53,7 +53,7 @@ local setup_autocmds = function()
 	local autogroup = api.nvim_create_augroup
 	local bg_change = autogroup("BackgroundChange", { clear = true })
 
-	autocmd("ColorScheme", {
+	autocmd({"ColorScheme", "VimResume"}, {
 		pattern = "*",
 		callback = function()
 			local color = get_color("Normal", "bg")
@@ -73,7 +73,7 @@ local setup_autocmds = function()
 		group = bg_change,
 	})
 
-	autocmd("VimLeavePre", {
+	autocmd({"VimLeavePre", "VimSuspend"}, {
 		callback = function()
 			if M.original_color ~= nil then
 				change_background(M.original_color, true)
