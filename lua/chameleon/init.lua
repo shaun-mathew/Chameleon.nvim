@@ -44,10 +44,6 @@ local change_background = function(color, sync)
 	end
 end
 
-local function get_color(group, attr)
-	return fn.synIDattr(fn.synIDtrans(fn.hlID(group)), attr)
-end
-
 local setup_autocmds = function()
 	local autocmd = api.nvim_create_autocmd
 	local autogroup = api.nvim_create_augroup
@@ -56,7 +52,7 @@ local setup_autocmds = function()
 	autocmd({"ColorScheme", "VimResume"}, {
 		pattern = "*",
 		callback = function()
-			local color = get_color("Normal", "bg")
+			local color = string.format("#%06X", vim.api.nvim_get_hl(0, {name = "Normal"}).bg)
 			change_background(color)
 		end,
 		group = bg_change,
@@ -65,10 +61,9 @@ local setup_autocmds = function()
 	autocmd("User", {
 		pattern = "NvChadThemeReload",
 		callback = function()
-			local color = get_color("Normal", "bg")
-			if color then
-				change_background(color)
-			end
+			local color = string.format("#%06X", vim.api.nvim_get_hl(0, {name = "Normal"}).bg)
+			change_background(color)
+			
 		end,
 		group = bg_change,
 	})
@@ -77,8 +72,10 @@ local setup_autocmds = function()
 		callback = function()
 			if M.original_color ~= nil then
 				change_background(M.original_color, true)
+				-- Looks like it was silently fixed in NVIM 0.10. At least, I can't reproduce it anymore,
+				-- so for now disable it and see if anyone reports it again.
 				-- https://github.com/neovim/neovim/issues/21856
-				vim.cmd[[sleep 10m]]
+				-- vim.cmd[[sleep 10m]]
 			end
 		end,
 		group = autogroup("BackgroundRestore", { clear = true }),
@@ -88,8 +85,6 @@ end
 M.setup = function()
 	get_kitty_background()
 	setup_autocmds()
-	local color = get_color("Normal", "bg")
-	change_background(color, true)
 end
 
 return M
